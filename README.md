@@ -1,7 +1,8 @@
-Gmail New Agent: Your Personal AI Email Summarizer
+## Gmail New Agent: Your Personal AI Email Summarizer
 Welcome to Gmail New Agent! 👋 This is a smart agent that automatically fetches, translates, and summarizes important emails from your Gmail inbox. Using the power of Google's Gemini API, it creates concise reports from newsletters and news alerts, and then emails you the summary.
 
 This project is designed to run seamlessly on Google Cloud Run and can be scheduled to run at any interval you choose, ensuring you always stay updated without the clutter.
+<img width="995" height="951" alt="Gemini_Generated_Image_ocq5c7ocq5c7ocq5" src="https://github.com/user-attachments/assets/d6d13d56-60e0-47b1-8346-d3315abce881" />
 
 ## ✨ Features
 Selective Email Fetching: Monitors your Gmail for unread emails from a specific list of senders you define.
@@ -44,13 +45,15 @@ A Google account (Gmail).
 
 2. Clone the Repository
 Bash
-
+~~~
 git clone https://github.com/your-username/gmail-new-agent.git
 cd gmail-new-agent
+~~~
 3. Install Dependencies
 Bash
-
+~~~
 pip install -r requirements.txt
+~~~
 4. Configure Google Cloud & Gmail API
 This is the most crucial step. You need to authorize the application to access your Gmail.
 
@@ -67,13 +70,13 @@ Choose External and click "Create".
 Fill in the required fields (App name, User support email, Developer contact information).
 
 On the "Scopes" page, click "Add or Remove Scopes", search for Gmail API, and add all of the following:
-
+~~~
 https://www.googleapis.com/auth/gmail.readonly
 
 https://www.googleapis.com/auth/gmail.send
 
 https://www.googleapis.com/auth/gmail.modify
-
+~~~
 On the "Test users" page, add the Google account email you want the agent to access.
 
 Create Credentials:
@@ -107,8 +110,9 @@ Run the Authentication Flow:
 Execute the main.py script from your terminal.
 
 Bash
-
+~~~
 python main.py
+~~~
 A new browser tab will open, asking you to log in with your Google account (the one you added as a test user).
 
 Grant the requested permissions.
@@ -122,23 +126,23 @@ IMPORTANT: credentials.json and token.json contain sensitive information. Make s
 This command builds a Docker image of your application and stores it in the Google Artifact Registry.
 
 Bash
-
+~~~
 gcloud builds submit --tag gcr.io/YOUR_PROJECT_ID/gmail-new-agent
 Replace YOUR_PROJECT_ID with your actual Google Cloud Project ID.
-
+~~~
 2. Deploy to Cloud Run
 This command deploys your container and sets up the necessary environment variable for your Gemini API key.
 
 Bash
-
+~~~
 gcloud run deploy gmail-new-agent \
   --image gcr.io/YOUR_PROJECT_ID/gmail-new-agent \
   --platform managed \
   --region YOUR_REGION \
   --allow-unauthenticated \
   --set-secrets="GEMINI_API_KEY=GEMINI_API_KEY:latest"
+~~~
 Replace YOUR_PROJECT_ID and YOUR_REGION (e.g., us-central1).
-
 The --allow-unauthenticated flag is needed so that Cloud Scheduler can easily trigger it.
 
 The --set-secrets command securely provides your Gemini API key to the application. It assumes you have already stored the key in Secret Manager with the name GEMINI_API_KEY. If not, do that first in the Google Cloud Console.
